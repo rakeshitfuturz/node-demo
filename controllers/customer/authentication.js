@@ -1,7 +1,7 @@
 let response = require('./../../utils/response');
 let models = require('./../../models/zindex');
 let { generateAccessToken } = require('./../../middlewares/authenticator');
-const { encrypt , decrypt } = require('../../utils/encryptor');
+const { encrypt, decrypt } = require('./../../utilities/encryptor_util');
 
 exports.login = async (req, res) => {
     try {
@@ -9,18 +9,17 @@ exports.login = async (req, res) => {
         if (!email || !password) {
             return response.badRequest("Invalid request!", res);
         }
-        let user = await models.admin.findOne({ email }).lean();
+        let user = await models.customer.findOne({ email });
         if (!user) {
             return response.unauthorized("Invalid credentials!", res);
         }
-        let isMatch = decrypt(user.password) === password;
+        let isMatch = await user.isPasswordMatch(encrypt(password));
         if (!isMatch) {
             return response.unauthorized("Invalid credentials!", res);
         }
-        let token = generateAccessToken({ adminId: user._id ,name:user.name,userType:'admin'});
-        return response.success('Login successfully.',{ token }, res);
+        let token = generateAccessToken({ id: user._id ,name:user.name,userType:'admin'});
+        return response.success({ token }, res);
     } catch (error) {
-        console.log(error);
         return response.error(error, res);
     }
 }
@@ -31,16 +30,14 @@ exports.register = async (req, res) => {
         if (!name || !email || !password) {
             return response.badRequest("Invalid request!", res);
         }
-        let user = await models.admin.findOne({ email });
+        let user = await models.customer.findOne({ email });
         if (user) {
             return response.unauthorized("User already exists!", res);
         }
-        let data = { name, email,password:encrypt(password)  };
-        user = await models.admin.create(data);
-        let token = generateAccessToken({ adminId: user._id ,name:user.name,userType:'admin'});
-        return response.success('User registered successfully.',{ token }, res);
+        user = await models.customer.create({ name, email,password:encrypt(password)  });
+        let token = generateAccessToken({ id: user._id ,name:user.name,userType:'admin'});
+        return response.success({ token }, res);
     } catch (error) {
-        console.log(error);
         return response.error(error, res);
     }
 }

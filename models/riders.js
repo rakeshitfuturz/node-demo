@@ -1,6 +1,5 @@
-let mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
-const mongooseAggregatePaginate = require("mongoose-aggregate-paginate-v2");
+let mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const Schema = mongoose.Schema;
 const schema = new Schema(
@@ -8,37 +7,38 @@ const schema = new Schema(
     name: { type: String },
     mobile: { type: String },
     emailId: { type: String },
-    dateOfBirth: { type: String ,default:""},
-    bloodGroup: { type: String ,default:""},
-    address: { type: String ,default:""},
-    pincode: { type: String ,default:""},
-    panNumber: { type: String ,default:""},
-    hubId: { type: mongoose.Types.ObjectId },
+    dateOfBirth: { type: String },
+    address: { type: String },
+    pincode: { type: String },
+    panNumber: { type: String },
     vehicleType: { type: mongoose.Types.ObjectId },
-    vehicleName: { type: String ,default:""},
-    vehicleNumber: { type: String ,default:""},
-    drivingLicenceNumber: { type: String ,default:""},
-    rcBookNumber: { type: String ,default:""},
-    upiId: { type: String ,default:""},
-    bankName: { type: String ,default:""},
-    bankAccountNumber: { type: String ,default:""},
-    ifscCode: { type: String ,default:""},
-    aadharCardFrontImage: { type: String ,default:""},
-    aadharCardBackImage: { type: String ,default:""},
-    dlFrontImage: { type: String ,default:""},
-    dlBackImage: { type: String ,default:""},
-    rcFrontImage: { type: String ,default:""},
-    rcBackImage: { type: String ,default:""},
-    profileImage: { type: String ,default:""},
-    vehicleImage: { type: String ,default:""},
-    panCardImage: { type: String ,default:""},
-    insuranceImage: { type: String ,default:""},
+    vehicleName: { type: String },
+    vehicleNumber: { type: String },
+    drivingLicenceNumber: { type: String },
+    rcBookNumber: { type: String },
+    upiId: { type: String },
+    bankName: { type: String },
+    bankAccountNumber: { type: String },
+    ifscCode: { type: String },
+    referralBy: { type: String },
+    aadharCardFrontImage: { type: String },
+    aadharCardBackImage: { type: String },
+    dlFrontImage: { type: String },
+    dlBackImage: { type: String },
+    rcFrontImage: { type: String },
+    rcBackImage: { type: String },
+    profileImage: { type: String },
+    vehicleImage: { type: String },
+    panCardImage: { type: String },
+    insuranceImage: { type: String },
     isDeleted: { type: Boolean },
     isDuty: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
+    udId:{type:String ,default:null},
     isVerified: { type: Boolean, default: false },
     isAttendance: { type: Boolean, default: false },
     isAttendanceByPass: { type: Boolean, default: false },
+    extraDetails: { type: Schema.Types.Mixed ,default:{}},
     salary: {
       type: {
         type: String,
@@ -46,7 +46,18 @@ const schema = new Schema(
       },
       amount: { type: String, default: null }
     },
-
+    byPassPIN: {
+      type: String,
+      default: null
+    },
+    addedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'admin'
+    },
+    updatedBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'admin'
+    }
   },
   {
     timestamps: true,
@@ -82,6 +93,4 @@ schema.method('toJSON', function () {
 });
 
 schema.plugin(mongoosePaginate);
-schema.plugin(mongooseAggregatePaginate);
-
-module.exports = mongoose.model("admins", schema);
+module.exports = mongoose.model("rider", schema);

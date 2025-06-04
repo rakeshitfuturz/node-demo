@@ -4,11 +4,12 @@ const codes = {
   forbidden: 403,
   unAuthrorized: 401,
   internalServerError: 500,
+  badRequest: 400,
 };
 
-exports.success = (message, data, response) => {
+exports.success = (message = "Executed successfully!", data, response) => {
   return response.status(codes.success).json({
-    message: message || "Executed successfully!",
+    message: message,
     data: data,
     status: codes.success,
   });
@@ -30,9 +31,9 @@ exports.forbidden = (message, response) => {
   });
 };
 
-exports.unauthorized = (response) => {
+exports.unauthorized = (message,response) => {
   return response.status(codes.unAuthrorized).json({
-    message: "Unauthorized access!",
+    message: message || "Unauthorized access!",
     data: null,
     status: codes.unAuthrorized,
   });
