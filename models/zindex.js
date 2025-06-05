@@ -2,5 +2,7 @@
 module.exports = {
     admin: require('./admins'),
     rider: require('./riders'),
-    customer: require('./customers')
+    customer: require('./customers'),
+    order: require('./orders'),
+    orderTracking: require('./orderTracking')
 }

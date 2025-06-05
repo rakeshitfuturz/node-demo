@@ -1,13 +1,12 @@
 let mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
-const helper = require('../utilities/helper_util');
 
 const Schema = mongoose.Schema;
 const schema = new Schema(
   {
     _id: { type: mongoose.Types.ObjectId, required: true },
     addressId:{type:Schema.Types.ObjectId ,default:null},
-    addressType:{type:String ,enum:['pick','drop'],default:'pick'},
+    addressType:{type:String ,enum:['pick','drop'],default:null},
     user: {
       id: { type: Schema.Types.ObjectId, required: true },
       name: { type: String, required: true },

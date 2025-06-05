@@ -8,35 +8,39 @@ exports.createOrder = async (req, res) => {
     try {
         const { error } = createOrderValidator.validate(req.body);
         if (error) {
-            return res.status(400).json({ message: 'Validation failed', errors: error.details.map(err => err.message) });
+            return response.badRequest("Invalid request!", res);
         }
 
         const { pickAddress, dropAddress, priority, extraDetails } = req.body;
-        const user = req.user;
+        const user = req.token;
 
-        const orderNo = `ORD-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+        const orderNo = `ORD-${Date.now()}`;
 
-        const order = await mongoose.model('order').create({
+        const order = await models.order.create({
             orderNo,
             status: 'created',
             pickAddress,
             dropAddress,
             priority,
-            user: [{ id: user._id, name: user.name, type: user.userType }],
+            user: [{ id: user.customerId, name: user.name, type: user.userType }],
             extraDetails
         });
 
-        const tracking = await mongoose.model('orderTracking').create({
+        const tracking = await models.orderTracking.create({
             _id: new mongoose.Types.ObjectId(),
-            user: { id: user._id, name: user.name, type: user.userType },
+            user: { id: user.customerId, name: user.name, type: user.userType },
             notes: 'Order created',
+            extraDetails:{
+                orderId:order._id
+            }
         });
 
         order.trackingInfo.push(tracking._id);
         await order.save();
 
-        return res.status(201).json({ message: 'Order created successfully', order });
+        return response.success('Order created successfully', order ,res);
     } catch (error) {
-        return res.status(500).json({ message: 'Server error', error: error.message });
+        console.log(error);
+        return response.error('Server error', error.message);
     }
 };

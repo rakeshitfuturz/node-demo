@@ -1,7 +1,7 @@
 let response = require('./../../utils/response');
 let models = require('./../../models/zindex');
 let { generateAccessToken } = require('./../../middlewares/authenticator');
-const { encrypt, decrypt } = require('./../../utilities/encryptor_util');
+const { encrypt, decrypt } = require('../../utils/encryptor');
 const helpers = require("./../../utils/helpers");
 exports.login = async (req, res) => {
     try {

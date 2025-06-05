@@ -15,4 +15,9 @@ module.exports = {
     { name: 'aadharCardFrontImage', maxCount: 1 }
   ],
   RIDER_PATH: 'courier/uploads/riders',
+  ORDER_IMAGES_LIST: [
+    { name: 'pickImage', maxCount: 1 },
+    { name: 'dropImage', maxCount: 1 }
+  ],
+  ORDER_PATH: 'courier/uploads/orders'
 }

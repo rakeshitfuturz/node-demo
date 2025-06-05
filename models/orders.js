@@ -1,7 +1,6 @@
 let mongoose = require('mongoose');
 const aggregatePaginate = require('mongoose-aggregate-paginate-v2');
 const mongoosePaginate = require('mongoose-paginate-v2');
-const helper = require('../utilities/helper_util');
 
 const Schema = mongoose.Schema;
 const mobileSchema = new Schema(

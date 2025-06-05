@@ -7,4 +7,8 @@ module.exports = [
     path: "/customer",
     file: require("./customer"),
   },
+  {
+    path: "/rider",
+    file: require("./rider"),
+  },
 ];
