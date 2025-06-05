@@ -35,8 +35,3 @@ exports.createOrderValidator = Joi.object({
     extraDetails: Joi.object().optional()
 });
 
-exports.assignOrderValidator = Joi.object({
-    orderId: Joi.string().required(),
-    riderId: Joi.string().required(),
-    riderName: Joi.string().required()
-});
