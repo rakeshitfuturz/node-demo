@@ -3,7 +3,7 @@ let models = require('../../models/zindex');
 let mongoose = require('mongoose');
 let { listRiderOrdersValidator , updateOrderStatusValidator } = require('../../validators/rider/order.validator');
 
-exports.listRiderOrders = async (req, res) => {
+exports.listOrders = async (req, res) => {
     try {
         const { error } = listRiderOrdersValidator.validate(req.body);
         if (error) {
@@ -48,7 +48,7 @@ exports.updateOrderStatus = async (req, res) => {
         for (let file in files) {
             images.push(files[file][0].key);
           }
-        const order = await models.order.findOne(orderId);
+        const order = await models.order.findOne({ _id: orderId });
         if (!order) {
             return response.notFound("Order not found!", res);
         }
@@ -95,8 +95,8 @@ exports.updateOrderStatus = async (req, res) => {
             _id: new mongoose.Types.ObjectId(),
             addressId,
             addressType,
-            user: { id: user._id, name: user.name, type: user.userType },
-            images: files || [],
+            user: { id: user.riderId, name: user.name, type: user.userType },
+            images: images || [],
             notes: notes || '',
             extraDetails: extraDetails || { status }
         });
@@ -106,6 +106,7 @@ exports.updateOrderStatus = async (req, res) => {
 
         return response.success('Order status updated successfully', order ,res);
     } catch (error) {
+        console.log(error);
         return response.error('Server error', error.message);
     }
 };

@@ -35,3 +35,8 @@ exports.createOrderValidator = Joi.object({
     extraDetails: Joi.object().optional()
 });
 
+exports.listCustomerOrdersValidator = Joi.object({
+    status: Joi.string().valid('created', 'partial picked', 'picked', 'running', 'return', 'delivered', 'partial delivered', 'cancelled', 'assigned').optional(),
+    page: Joi.number().integer().min(1).default(1),
+    limit: Joi.number().integer().min(1).max(100).default(10)
+});

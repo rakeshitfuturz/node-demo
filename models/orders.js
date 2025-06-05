@@ -22,7 +22,7 @@ const PickedAddressSchema = new Schema(
     address: { type: String, required: true },
     coords: { type: String, default: '' },
     packageDetails: {type:Schema.Types.Mixed ,default:{}},
-    isPicked:{type : String ,default:false},
+    isPicked:{type : Boolean ,default:false},
     extraDetails:{type : Schema.Types.Mixed ,default:{}}
   },
   { strict: true }
@@ -35,7 +35,7 @@ const DropAddressSchema = new Schema(
     address: { type: String, required: true },
     coords: { type: String, default: '' },
     packageDetails: {type:Schema.Types.Mixed ,default:{}},
-    isDelivered:{type : String ,default:false},
+    isDelivered:{type : Boolean ,default:false},
     extraDetails:{type : Schema.Types.Mixed ,default:{}}
   },
   { strict: true }
