@@ -1,15 +1,17 @@
-let response = require('./../../utils/response');
-let models = require('./../../models/zindex');
-let { generateAccessToken } = require('./../../middlewares/authenticator');
+let response = require('../../utils/response');
+let models = require('../../models/zindex');
+let { generateAccessToken } = require('../../middlewares/authenticator');
 const { encrypt , decrypt } = require('../../utils/encryptor');
 const helpers = require("../../utils/helpers");
 const _ = require('lodash');
 const moment = require('moment');
 const mongoose = require('mongoose');
+const authValidator = require('../../validators/admin/auth.validator');
 
 exports.save = async (req, res) => {
     try {
       let files = req.files;
+      let request = await authValidator.ridersValidator.validateAsync(req.body);
       for (let file in files) {
         request[file] = files[file][0].key;
       }

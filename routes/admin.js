@@ -4,7 +4,7 @@ const authController = require('../controllers/admin/authentication');
 const { isAdmin } = require('../middlewares/authenticator');
 const files = require('../utils/flieUtils');
 const constant = require('../config/constants');
-const ridersCtrl = require('../controllers/rider/rider.ctrl');
+const ridersCtrl = require('../controllers/admin/rider.ctrl');
 
 router.post('/login', authController.login);
 router.post('/register', authController.register);

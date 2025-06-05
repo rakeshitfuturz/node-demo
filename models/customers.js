@@ -10,7 +10,6 @@ const schema = new Schema(
     emailId: { type: String, required: true },
     password: { type: String, default: '' },
     address: { type: Schema.Types.Mixed },
-    image: { type: String, default: '' },
     gst: {
       gstNumber: { type: String, default: '' },
       gstBusinessName: { type: String, default: '' },

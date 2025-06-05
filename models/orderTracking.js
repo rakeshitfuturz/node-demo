@@ -6,25 +6,8 @@ const Schema = mongoose.Schema;
 const schema = new Schema(
   {
     _id: { type: mongoose.Types.ObjectId, required: true },
-    status: {
-      type: String,
-      enum: [
-        'verified',
-        'create',
-        'picked',
-        'delivered',
-        'cancelled',
-        'expiry_return',
-        'half_return',
-        'reassigned',
-        'return',
-        'admin_return',
-        'returned',
-        'out_for_delivery',
-        'reach_to_hub',
-        'out_for_hub'
-      ]
-    },
+    addressId:{type:Schema.Types.ObjectId ,default:null},
+    addressType:{type:String ,enum:['pick','drop'],default:'pick'},
     user: {
       id: { type: Schema.Types.ObjectId, required: true },
       name: { type: String, required: true },

@@ -2,6 +2,7 @@ let jwt = require('jsonwebtoken');
 let response = require("../utils/response");
 let models = require("../models/zindex");
 const { encrypt , decrypt } = require('../utils/encryptor');
+
 exports.generateAccessToken = (userData) => {
   let token = jwt.sign(userData, process.env.JWT_SECRET, {
     expiresIn: `${process.env.JWT_EXPIRES_IN_DAYS}d`
@@ -10,7 +11,7 @@ exports.generateAccessToken = (userData) => {
 };
 
 
-const isAdmin = (req, res, next) => {
+exports.isAdmin = (req, res, next) => {
   const bearerHeader = req.headers['authorization'];
   if (typeof bearerHeader !== 'undefined') {
     const bearer = bearerHeader.split(' ');
@@ -28,7 +29,7 @@ const isAdmin = (req, res, next) => {
       } else {
         try {
           models.admin
-        .findById(auth.id)
+        .findById(auth.adminId)
         .lean()
         .then((result) => {
           if (result.isActive) {

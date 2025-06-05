@@ -63,7 +63,7 @@ const userDetails = new Schema(
 const schema = new Schema(
   {
     orderNo: { type: String },
-    status: { type: String, enum: ['created', 'picked', 'running', 'return', 'delivered', 'cancelled', 'assigned'] },
+    status: { type: String, enum: ['created', 'partial picked','picked', 'running', 'return', 'delivered' ,'partial delivered', 'cancelled', 'assigned'] },
     pickAddress: [PickedAddressSchema],
     dropAddress: [DropAddressSchema],
     priority: { type: Boolean, default: false },
