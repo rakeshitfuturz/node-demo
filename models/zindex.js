@@ -4,5 +4,6 @@ module.exports = {
     rider: require('./riders'),
     customer: require('./customers'),
     order: require('./orders'),
-    orderTracking: require('./orderTracking')
+    orderTracking: require('./orderTracking'),
+    attendence: require('./attendence')
 }

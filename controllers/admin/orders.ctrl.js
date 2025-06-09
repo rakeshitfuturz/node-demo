@@ -1,6 +1,7 @@
 let response = require('../../utils/response');
 let models = require('../../models/zindex');
 let mongoose = require('mongoose');
+const moment = require('moment');
 let { assignOrderValidator ,listOrdersValidator} = require('../../validators/admin/order.validor');
 
 exports.assignOrder = async (req, res) => {
@@ -39,6 +40,7 @@ exports.assignOrder = async (req, res) => {
 
         return response.success('Order assigned successfully', order ,res);
     } catch (error) {
+        console.log(error);
         return response.error('Server error', error.message);
     }
 };
@@ -73,3 +75,36 @@ exports.listOrders = async (req, res) => {
         return response.error('Server error', error.message);
     }
 };
+
+exports.listAvailableRiders = async(req,res)=>{
+    try{
+        const orderModel = models.order;
+        const riderModel = models.rider;
+
+        const date = new Date();
+        const query = { status: {$ne: 'created'}};
+        if (date) {
+            query.createdAt = { $gte: moment(date).startOf('day').toDate(), $lte: moment(date).endOf('day').toDate() };
+          }
+
+        const results = await orderModel.aggregate([
+            {
+                $match: query
+            },
+            {
+                $project: {
+                    _id: 1,
+                    rider: 1
+                }
+            }
+        ]);
+
+        const riderIds = results.map(order => new mongoose.Types.ObjectId(order.rider.id));
+        const riders = await riderModel.find({ _id: { $nin: riderIds } }).select('_id name');
+
+        return response.success('Available riders retrieved successfully', riders, res);
+    }catch (error) {
+        console.log(error);
+        return response.error('Server error', error.message);
+    }
+}

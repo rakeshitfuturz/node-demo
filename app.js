@@ -1,5 +1,7 @@
 const path = require("path");
-
+const socket = require("socket.io");
+let http = require("http");
+let { initializeSocketServer } = require('./sockets/init');
 //Setting up environment and database
 const dotenv = require("dotenv");
 const envPath = path.resolve(
@@ -14,7 +16,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
 
-const app = express();
+const app = express(); 
 
 //Setting up CORS
 app.use(cors());
@@ -48,5 +50,6 @@ app.use((err, req, res, next) => {
 
   res.status(statusCode).json(result);
 });
-
+let server = http.createServer(app);
+initializeSocketServer(server);
 module.exports = app;

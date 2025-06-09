@@ -40,9 +40,11 @@ exports.isAdmin = (req, res, next) => {
           }
         })
         .catch((err) => {
+          console.log(err);
           return response.unauthorized(res);
         });
         } catch (err) {
+          console.log(err);
           return response.unauthorized(res);
         }
       }

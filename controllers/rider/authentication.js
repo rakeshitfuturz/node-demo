@@ -58,3 +58,19 @@ exports.login = async (req, res) => {
       return response.error(err, res);
     }
   };
+
+  exports.whoAmI = async (req, res) => {
+      try {
+        let riderModel = models.rider;
+        let userData = await riderModel
+          .findById(req.token.riderId)
+          .select('name email isActive isDeleted mobile')
+          .lean();
+        if (userData) {
+          userData._id = userData?._id || userData?.id;
+        }
+        return response.success('User info!', userData, res);
+      } catch (err) {
+        return response.error(err, res);
+      }
+    };

@@ -34,7 +34,8 @@ exports.login = async (req, res) => {
         let token = generateAccessToken({
             customerId: user._id,
             name: user.name,
-            userType: "customer"
+            userType: "customer",
+            customerType:user.customerType
         });
 
         return response.success('Login successful.', { token }, res);
@@ -47,11 +48,11 @@ exports.register = async (req, res) => {
     try {
         let { error, value } = authValidator.registerSchema.validate(req.body);
         if (error) {
-            return response.badRequest(error.details[0].message, res);
+            return response.badRequest(error, res);
         }
 
         // Check for existing user
-        let user = await models.customer.findOne({ $or: [{ email: value.email }, { mobile: value.mobile }] });
+        let user = await models.customer.findOne({ $or: [{ emailId: value.emailId }, { mobile: value.mobile }] }).lean();
         if (user) {
             return response.unauthorized("User already exists!", res);
         }
@@ -59,7 +60,7 @@ exports.register = async (req, res) => {
         // Create user with all schema fields
         user = await models.customer.create(value);
         // Generate access token
-        let token = generateAccessToken({ customerId: user._id, name: user.name, userType:"customer" });
+        let token = generateAccessToken({ customerId: user._id, name: user.name, userType:"customer",customerType:user.customerType });
 
         return response.success('User registered successfully.',{ token }, res);
     } catch (error) {
@@ -67,3 +68,20 @@ exports.register = async (req, res) => {
         return response.error(error, res);
     }
 }
+
+
+exports.whoAmI = async (req, res) => {
+    try {
+      let distributorModel = models.customer;
+      let userData = await distributorModel
+        .findById(req.token.customerId)
+        .select('name email isActive isDeleted mobile customerType')
+        .lean();
+      if (userData) {
+        userData._id = userData?._id || userData?.id;
+      }
+      return response.success('User info!', userData, res);
+    } catch (err) {
+      return response.error(err, res);
+    }
+  };

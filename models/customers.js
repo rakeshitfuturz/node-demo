@@ -15,6 +15,7 @@ const schema = new Schema(
       gstBusinessName: { type: String, default: '' },
       isUpdated: { type: Boolean, default: false }
     },
+    customerType:{type:String , enum:['B2B','B2C','BOTH'],default:'B2C'},
     bankName: { type: String, default: '' },
     accountNo: { type: String, default: '' },
     accountNo: { type: String, default: '' },

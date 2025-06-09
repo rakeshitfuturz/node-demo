@@ -83,7 +83,6 @@ const schema = new Schema(
         default: null
       }
     ],
-    isPaid:{type:Schema.Types.Boolean ,default:false},
     paymentId:{type:Schema.Types.ObjectId ,defaul:null},
     orderChargesDetails:{type:Schema.Types.Mixed ,default:null},
     extraDetails: {

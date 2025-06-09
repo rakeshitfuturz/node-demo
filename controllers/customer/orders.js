@@ -11,7 +11,7 @@ exports.createOrder = async (req, res) => {
             return response.badRequest("Invalid request!", res);
         }
 
-        const { pickAddress, dropAddress, priority, extraDetails } = req.body;
+        const { pickAddress, dropAddress, priority, extraDetails} = req.body;
         const user = req.token;
 
         const orderNo = `ORD-${Date.now()}`;
@@ -22,7 +22,7 @@ exports.createOrder = async (req, res) => {
             pickAddress,
             dropAddress,
             priority,
-            user: [{ id: user.customerId, name: user.name, type: user.userType }],
+            user: [{ id: user.customerId, name: user.name, type: user.userType ,customerType:user.customerType}],
             extraDetails
         });
 

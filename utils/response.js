@@ -31,9 +31,9 @@ exports.forbidden = (message, response) => {
   });
 };
 
-exports.unauthorized = (message,response) => {
+exports.unauthorized = (response) => {
   return response.status(codes.unAuthrorized).json({
-    message: message || "Unauthorized access!",
+    message: "Unauthorized access!",
     data: null,
     status: codes.unAuthrorized,
   });
